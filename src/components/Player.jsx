@@ -1,11 +1,16 @@
 import { useState } from "react";
 
-export default function Player({ initialName, symbol, isActive }) {
+export default function Player({ initialName, symbol, isActive, onChangeName }) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
 
   function setEditing() {
     setIsEditing((editing) => !editing);
+//     Because if isEditing is true, that means that we just click the button to stop editing
+//      and, therefore, we wanna trigger this function onchangeName. So it doesn't re-render for nothing.
+    if (isEditing) {
+      onChangeName(symbol, playerName)
+    }
   }
 
   function handleChange(e) {
