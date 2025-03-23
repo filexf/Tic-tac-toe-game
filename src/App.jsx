@@ -23,7 +23,10 @@ function App() {
   const [gameTurns, setGameTurns] = useState([]);
   // const [activePlayer, setActivePlayer] = useState("X");
   const activePlayer = deriveActivePlayer(gameTurns);
-  let gameBoard = initialGameBoard;
+  
+  let gameBoard = [...initialGameBoard.map(array => [...array])];
+  // made a copy there instead of selecting the original array of arrays.
+  // let gameBoard = initialGameBoard
 
   for (const turn of gameTurns) {
     const { square, player } = turn;
@@ -63,6 +66,10 @@ function App() {
     });
   }
 
+  function handleRestart(){
+    setGameTurns([])
+  }
+
   return (
     <main>
       <div id="game-container">
@@ -78,7 +85,7 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        {(winner || hasDraw) && <GameOver winner= {winner}/>}
+        {(winner || hasDraw) && <GameOver winner= {winner} onRestart={handleRestart}/>}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
